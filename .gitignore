@@ -1,0 +1,8 @@
+# Claude Code - credentials & local state
+.claude/credentials.json
+.claude/.env.local
+.claude/local_storage/
+
+# OS
+.DS_Store
+Thumbs.db
