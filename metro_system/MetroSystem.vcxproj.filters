@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{75571F1B-3AFF-43E6-AFA2-A4944C3BDDF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="数据文件">
+      <UniqueIdentifier>{7D892003-79BF-4223-AF91-412118C7398F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\Station.csv">
+      <Filter>数据文件</Filter>
+    </None>
+    <None Include="data\Edge.csv">
+      <Filter>数据文件</Filter>
+    </None>
+    <None Include="data\update_station_status.csv">
+      <Filter>数据文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>
