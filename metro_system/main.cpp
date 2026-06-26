@@ -9,6 +9,9 @@
 #include <algorithm>
 #include <climits>
 #include <iomanip>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 using namespace std;
 
@@ -802,6 +805,10 @@ void menuLeastTransfer() {
 }
 
 int main() {
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+#endif
     cout << "正在加载数据...\n";
 
     if (!loadStations(stationCsvPath)) {
