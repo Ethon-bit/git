@@ -8,6 +8,7 @@
 #include <set>
 #include <algorithm>
 #include <climits>
+#include <limits>
 #include <iomanip>
 #ifdef _WIN32
 #include <windows.h>
