@@ -464,7 +464,7 @@ void clearScreen() {
 
 void pressAnyKey() {
     cout << "\n按回车键继续...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(1000000, '\n');
 }
 
 int readInt(const string& prompt) {
