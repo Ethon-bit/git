@@ -3,6 +3,31 @@
 .claude/.env.local
 .claude/local_storage/
 
+# VS
+*.pdb
+*.ilk
+*.idb
+*.ipch
+*.suo
+*.wsuo
+*.db
+*.obj
+*.recipe
+*.log
+*.tlog
+.vs/
+bin/
+obj/
+
+# Build
+*.exe
+*.o
+*.out
+
+# Docs
+*.pdf
+*.docx
+
 # OS
 .DS_Store
 Thumbs.db

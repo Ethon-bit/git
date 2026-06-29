@@ -1,3 +1,17 @@
 *.exe
 *.o
 *.out
+*.pdb
+*.ilk
+*.idb
+*.ipch
+*.suo
+*.wsuo
+*.db
+*.obj
+*.recipe
+*.log
+*.tlog
+.vs/
+bin/
+obj/

@@ -543,12 +543,14 @@ void menuStationManagement() {
         cout << "  3. 显示当前关闭站点\n";
         cout << "  4. 恢复所有站点初始状态\n";
         cout << "  5. 显示线路站点信息\n";
-        cout << "  6. 返回上级菜单\n";
+        cout << "  6. 站点查询\n";
+        cout << "  7. 受关闭站点影响站点分析\n";
+        cout << "  8. 返回上级菜单\n";
         cout << "============================================\n";
 
         int opt = readInt("请输入选项编号: ");
-        if (opt < 1 || opt > 6) {
-            cout << "输入无效，请输入数字选项1、2、3、4、5、6\n"; pressAnyKey(); continue;
+        if (opt < 1 || opt > 8) {
+            cout << "输入无效，请输入数字选项1-8\n"; pressAnyKey(); continue;
         }
 
         switch (opt) {
@@ -698,7 +700,77 @@ void menuStationManagement() {
             }
             pressAnyKey(); break;
         }
-        case 6: return;
+        case 6: {
+            // ===== 站点查询 =====
+            cout << "请输入站点关键词: ";
+            string kw;
+            getline(cin, kw);
+            vector<Station*> results = globalGraph.searchStations(kw);
+            if (results.empty()) {
+                cout << "未找到匹配的站点。\n";
+            } else {
+                cout << "\n匹配的站点（共" << results.size() << "个）：\n";
+                cout << left << setw(8) << "ID" << setw(22) << "站点名称"
+                     << setw(18) << "所属线路" << setw(10) << "状态" << "换乘信息\n";
+                cout << string(76, '-') << "\n";
+                for (size_t i = 0; i < results.size(); i++) {
+                    Station* s = results[i];
+                    string tinfo;
+                    set<string> tlines = globalGraph.getTransferLines(s->id);
+                    for (set<string>::iterator ti = tlines.begin(); ti != tlines.end(); ++ti)
+                        if (*ti != s->line) tinfo += *ti + " ";
+                    if (tinfo.empty()) tinfo = "-";
+                    cout << left << setw(8) << s->id << setw(22) << s->name
+                         << setw(18) << s->line << setw(10)
+                         << (s->open ? "开启" : "关闭") << tinfo << "\n";
+                }
+            }
+            pressAnyKey(); break;
+        }
+        case 7: {
+            // ===== 受关闭站点影响站点分析 =====
+            cout << "请输入已关闭或即将关闭的站点关键词: ";
+            string kw;
+            getline(cin, kw);
+            vector<Station*> results = globalGraph.searchStations(kw);
+            if (results.empty()) { cout << "未找到匹配的站点。\n"; pressAnyKey(); break; }
+
+            Station* chosen = NULL;
+            if (results.size() == 1) {
+                chosen = results[0];
+            } else {
+                cout << "匹配的站点如下：\n";
+                for (size_t i = 0; i < results.size(); i++)
+                    cout << "  " << (i + 1) << ". " << results[i]->name
+                         << "（" << results[i]->line << "）\n";
+                int sel = readInt("请输入对应编号: ");
+                if (sel >= 1 && sel <= (int)results.size())
+                    chosen = results[sel - 1];
+            }
+            if (!chosen) { cout << "输入无效。\n"; pressAnyKey(); break; }
+
+            set<int> affected = globalGraph.getAffectedArea(chosen->id);
+            if (affected.empty()) {
+                cout << "\n关闭 " << chosen->name << "（" << chosen->line << "）"
+                     << " 不会导致其他站点不可达。\n";
+            } else {
+                cout << "\n关闭 " << chosen->name << "（" << chosen->line << "）"
+                     << " 后，以下 " << affected.size() << " 个站点将受到影响（不可达）：\n\n";
+                cout << left << setw(22) << "站点名称" << setw(18) << "所属线路" << "\n";
+                cout << string(40, '-') << "\n";
+                int count = 0;
+                for (set<int>::iterator it = affected.begin(); it != affected.end(); ++it) {
+                    Station* s = globalGraph.getStation(*it);
+                    if (s) {
+                        cout << left << setw(22) << s->name << setw(18) << s->line << "\n";
+                        count++;
+                    }
+                }
+                cout << "\n共 " << count << " 个站点受影响。\n";
+            }
+            pressAnyKey(); break;
+        }
+        case 8: return;
         }
     }
 }
